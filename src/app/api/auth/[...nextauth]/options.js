@@ -5,6 +5,7 @@ import Credentials from "next-auth/providers/credentials";
 import { connectDB } from "@/app/lib/db";
 
 export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     jwt: true,
   },
@@ -22,7 +23,7 @@ export const authOptions = {
 
         return {
           id: user._id,
-          role: process.env.ROLE_BASIC,
+          role: user.role ? user.role : process.env.ROLE_BASIC,
         };
       },
     }),
