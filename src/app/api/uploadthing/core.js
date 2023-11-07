@@ -11,18 +11,28 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
-      const sess = await getServerSession(authOptions);
-      console.log(sess);
-      const user = sess?.user;
+      // const sess = await getServerSession(authOptions);
+      // console.log(sess);
+      // const user = sess?.user;
 
-      //   // If you throw, the user will not be able to upload
-      if (!sess || !user) throw new Error("Unauthorized");
+      // //   // If you throw, the user will not be able to upload
+      // if (!sess || !user) throw new Error("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user?.id };
+      return { userId: "user?.id" };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
+      console.log("Upload complete for userId:", metadata.userId);
+
+      console.log("file url", file.url);
+    }),
+
+  videoUploader: f({ video: { maxFileSize: "16MB" } })
+    .middleware(async ({ req }) => {
+      return { userId: "user?.id" };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
       console.log("Upload complete for userId:", metadata.userId);
 
       console.log("file url", file.url);

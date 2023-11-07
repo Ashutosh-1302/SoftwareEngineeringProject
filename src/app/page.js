@@ -11,7 +11,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <button
         onClick={() =>
-          signIn("credentials", { password: "pwd", username: "ash" })
+          signIn("credentials", { password: "pwd", username: "ash" }, onSucc)
         }
       >
         Sign in with Email

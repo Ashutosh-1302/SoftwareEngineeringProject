@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const CourseSchema = new mongoose.Schema({
   title: String,
-  contact: Number,
+
   rating: Number,
-  email: String,
-  role: Number,
+
+  description: String,
   selected: Boolean,
   students: [
     {
@@ -29,6 +29,8 @@ const CourseSchema = new mongoose.Schema({
       ref: "Assignment",
     },
   ],
+
+  imageUrl: String,
 });
 
 const Course = mongoose.models.Course || mongoose.model("Course", CourseSchema);
