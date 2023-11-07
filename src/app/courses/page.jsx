@@ -9,7 +9,11 @@ const CoursePage = async () => {
   return (
     <div>
       <div>CoursesPage</div>
-      {JSON.stringify(courses)}
+      {courses?.map((course) => (
+        <div>
+          <Link href={`/courses/${course._id}`}>{course.title}</Link>
+        </div>
+      ))}
 
       <Link href={"/courses/publish"}>Publish</Link>
     </div>
