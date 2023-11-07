@@ -1,3 +1,4 @@
+
 import { getServerSession } from "next-auth";
 import CourseList from "./components/Course/CourseList";
 import { authOptions } from "./api/auth/[...nextauth]/options";
@@ -14,6 +15,7 @@ export default async function Home() {
   const user = await User.findById(uid);
 
   const courses = await Course.find({});
+
 
   return (
     <main className="flex flex-col justify-between">
