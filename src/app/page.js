@@ -2,6 +2,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import axios from "axios";
 import { UploadButton } from "@uploadthing/react";
+import Link from "next/link";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -40,7 +41,8 @@ export default function Home() {
           alert(`ERROR! ${error.message}`);
         }}
       />
-      <button onClick={() => signIn("github")}>Sign in with GitHub</button>
+      <button onClick={() => signIn("github")}>Sign in with GitHub</button>]
+      <Link href ='/SignUpForm'>Form</Link>
     </main>
   );
 }
