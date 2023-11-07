@@ -3,12 +3,15 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-const LinkingButtons = ({ className, url, title }) => {
+const LinkingButtons = ({ className, url, children }) => {
   const rtr = useRouter();
 
   return (
-    <button className={`${className}`} onClick={() => rtr.push(url)}>
-      {title}
+    <button
+      className={`${className} hover:scale-105 transition-all`}
+      onClick={() => rtr.push(url)}
+    >
+      {children}
     </button>
   );
 };

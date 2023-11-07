@@ -31,10 +31,7 @@ const CoursePage = async ({ params }) => {
             </div>
           ))}
         </div>
-        <LinkingButtons
-          url={`/courses/${course._id}/publish`}
-          title={"Lesson Publish"}
-        >
+        <LinkingButtons url={`/courses/${course._id}/publish`} className={""}>
           Publish
         </LinkingButtons>
       </div>
