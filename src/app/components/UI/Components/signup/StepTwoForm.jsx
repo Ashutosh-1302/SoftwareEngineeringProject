@@ -60,16 +60,31 @@ export default function StepOneForm() {
   };
 
   return (
-    <div
-      className="h-screen flex justify-center items-center"
-      style={{
-        background: "linear-gradient(to bottom, lightblue 50%, white 50%)",
-      }}
-    >
-      <div
-        className="bg-blue-400 w-1/3 px-4 rounded-lg py-8"
-        style={{ background: "white" }}
-      >
+    <div className='h-screen flex flex-col justify-center items-center' style={{ background: 'linear-gradient(to bottom, lightblue 50%, white 50%)' }}>
+      <div class="flex-col lg:flex lg:flex-row lg:gap-x-8 py-4">
+  <div class="lg:w-1/2">
+    <div class="flex-row gap-x-8 ">
+      <div className='py-5'>
+        <button className='bg-red-300 hover:bg-white px-7 py-2 rounded-sm'>Student</button>
+      </div>
+      <div>
+        <button className='bg-red-300 hover:bg-white px-7 py-2 rounded-sm'>Instructor</button>
+      </div>
+    </div>
+  </div>
+  <div class="lg:w-1/2">
+    <div class="flex-row gap-x-8">
+      <div className='py-5'>
+        <button className='bg-red-300 hover:bg-white px-7 py-2 rounded-sm'>Parent</button>
+      </div>
+      <div>
+        <button className='bg-red-300 hover:bg-white px-7 py-2 rounded-sm'>Teaching.A</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <div className='bg-blue-400 w-1/3 px-4 rounded-lg py-8' style={{ background: 'white' }}>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
