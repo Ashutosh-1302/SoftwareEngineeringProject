@@ -8,6 +8,7 @@ const CourseCreate = () => {
   const [imageUrl, setImageUrl] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const [category, setCategory] = React.useState("");
 
   return (
     <div>
@@ -31,6 +32,7 @@ const CourseCreate = () => {
           const { data } = await axios.post("/api/course", {
             title: e.target.title.value,
             description: e.target.description.value,
+            category,
             imageUrl,
           });
           console.log(data);
@@ -47,6 +49,13 @@ const CourseCreate = () => {
           name="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+        />
+
+        <input
+          type="text"
+          name="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
         />
 
         <button
