@@ -1,11 +1,11 @@
-"use client"
-import Link from 'next/link';
-import { useState } from 'react';
+"use client";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function StepOneForm() {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -19,7 +19,7 @@ export default function StepOneForm() {
     // Clear the error message when the user edits the input field
     setErrors({
       ...errors,
-      [name]: '',
+      [name]: "",
     });
   };
 
@@ -27,13 +27,13 @@ export default function StepOneForm() {
     const newErrors = {};
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email ID is required';
+      newErrors.email = "Email ID is required";
     } else if (!isValidEmail(formData.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = "Invalid email format";
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     }
 
     setErrors(newErrors);
@@ -51,11 +51,11 @@ export default function StepOneForm() {
 
     if (validateForm()) {
       // Data is valid, you can submit it or perform other actions here
-      console.log('Form data:', formData);
+      console.log("Form data:", formData);
 
       // Redirect to the next step using Next.js routing
       // You can customize the path as needed
-      window.location.href = '/SignUpForm';
+      window.location.href = "/SignUpForm";
     }
   };
 
@@ -87,33 +87,46 @@ export default function StepOneForm() {
       <div className='bg-blue-400 w-1/3 px-4 rounded-lg py-8' style={{ background: 'white' }}>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Email ID</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Email ID
+            </label>
             <input
-              type='email'
-              name='email'
+              type="email"
+              name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`border border-black p-2 rounded ${errors.email ? 'border-red-500' : ''}`}
+              className={`border border-black p-2 rounded ${
+                errors.email ? "border-red-500" : ""
+              }`}
             />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email}</p>
+            )}
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
-              type='password'
-              name='password'
+              type="password"
+              name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`border border-black p-2 rounded ${errors.password ? 'border-red-500' : ''}`}
+              className={`border border-black p-2 rounded ${
+                errors.password ? "border-red-500" : ""
+              }`}
             />
-            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password}</p>
+            )}
           </div>
 
-          <Link href='/SignUpForm'> {/* Adjust the path to your StepTwoForm */}
-            <a className='bg-blue-500 text-white p-2 rounded hover:bg-blue-600'>
-              Next
-            </a>
+          <Link
+            href="/SignUpForm"
+            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          >
+            Next
           </Link>
         </form>
       </div>

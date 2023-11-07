@@ -2,13 +2,20 @@
 
 import { UploadButton } from "@uploadthing/react";
 import axios from "axios";
+import { useRouter, useParams } from "next/navigation";
 import React from "react";
 
 const LessonCreate = () => {
+  const searchParams = useParams();
+  const { id } = searchParams;
+  console.log(id);
+
   const [imageUrl, setImageUrl] = React.useState("");
   const [videoUrl, setVideoUrl] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
+
+  const rtr = useRouter();
 
   return (
     <div>
@@ -47,8 +54,9 @@ const LessonCreate = () => {
             description: e.target.description.value,
             imageUrl,
             videoUrl,
+            courseId: id,
           });
-          console.log(data);
+          rtr.push(`/courses/${id}`);
         }}
       >
         <input
