@@ -1,13 +1,14 @@
+"use client";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function StepOneForm({
-  login,
-  setLogin,
-  nextStep,
-  formData,
-  setFormData,
-}) {
+export default function LoginForm({ login, setLogin }) {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -16,19 +17,22 @@ export default function StepOneForm({
       ...formData,
       [name]: value,
     });
+    // Clear the error message when the user edits the input field
+    setErrors({
+      ...errors,
+      [name]: "",
+    });
   };
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (formData.firstName.trim() === "") {
-      newErrors.firstName = "First Name is required";
+    if (!formData.email.trim()) {
+      newErrors.email = "Email ID is required";
     }
-    if (formData.lastName.trim() === "") {
-      newErrors.lastName = "Last Name is required";
-    }
-    if (formData.contactNumber.trim() === "") {
-      newErrors.contactNumber = "Contact Number is required";
+
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
     }
 
     setErrors(newErrors);
@@ -44,14 +48,17 @@ export default function StepOneForm({
 
       // Redirect to the next step using Next.js routing
       // You can customize the path as needed
-
-      nextStep();
+      signIn("credentials", {
+        username: formData.email,
+        password: formData.password,
+        callbackUrl: `/`,
+      });
     }
   };
 
   return (
     <div
-      className="h-screen flex justify-center items-center"
+      className="h-screen flex flex-col justify-center items-center"
       style={{
         background: "linear-gradient(to bottom, lightblue 50%, white 50%)",
       }}
@@ -63,76 +70,56 @@ export default function StepOneForm({
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
-              First Name
+              Username
             </label>
             <input
               type="text"
-              name="firstName"
-              value={formData.firstName}
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               className={`border border-black p-2 rounded ${
-                errors.firstName ? "border-red-500" : ""
+                errors.email ? "border-red-500" : ""
               }`}
             />
-            {errors.firstName && (
-              <p className="text-red-500 text-sm">{errors.firstName}</p>
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email}</p>
             )}
           </div>
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
-              Last Name
+              Password
             </label>
             <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
+              type="password"
+              name="password"
+              value={formData.password}
               onChange={handleChange}
               className={`border border-black p-2 rounded ${
-                errors.lastName ? "border-red-500" : ""
+                errors.password ? "border-red-500" : ""
               }`}
             />
-            {errors.lastName && (
-              <p className="text-red-500 text-sm">{errors.lastName}</p>
-            )}
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Contact Number
-            </label>
-            <input
-              type="text"
-              name="contactNumber"
-              value={formData.contactNumber}
-              onChange={handleChange}
-              className={`border border-black p-2 rounded ${
-                errors.contactNumber ? "border-red-500" : ""
-              }`}
-            />
-            {errors.contactNumber && (
-              <p className="text-red-500 text-sm">{errors.contactNumber}</p>
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password}</p>
             )}
           </div>
 
           <button
-            type="submit"
             className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            type="submit"
           >
-            Next
+            Submit
           </button>
         </form>
 
-        {/* <button ></button> */}
-
         {!login && (
-          <button className="">
-            <div onClick={() => setLogin(true)}>Login</div>
+          <button className="mt-2">
+            <a onClick={() => setLogin(true)}>Login</a>
           </button>
         )}
         {!!login && (
-          <button className="">
-            <div onClick={() => setLogin(false)}>Sign Up</div>
+          <button className="mt-2">
+            <a onClick={() => setLogin(false)}>Sign Up</a>
           </button>
         )}
       </div>
