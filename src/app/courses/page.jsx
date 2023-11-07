@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { connectDB } from "../lib/db";
 import Course from "../models/Course";
+import CourseElongatedList from "../components/Course/CourseElongatedList";
 
 const CoursePage = async () => {
   await connectDB();
@@ -8,14 +9,15 @@ const CoursePage = async () => {
 
   return (
     <div>
-      <div>CoursesPage</div>
-      {courses?.map((course) => (
-        <div>
-          <Link href={`/courses/${course._id}`}>{course.title}</Link>
-        </div>
-      ))}
+      <div className="text-xl mx-3 font-semibold">All Courses</div>
 
-      <Link href={"/courses/publish"}>Publish</Link>
+      <CourseElongatedList courses={courses} />
+
+      <div className="bg-blue-700 px-4 py-2 text-white rounded-md my-12 w-1/4 ml-4">
+        <Link href="/courses/publish" className="w-full">
+          Publish
+        </Link>
+      </div>
     </div>
   );
 };

@@ -1,12 +1,18 @@
 import { StarOutlined } from "@ant-design/icons";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import React from "react";
+import LinkingButtons from "../Wrappers/ClientWrappers/LinkingButtons";
 
 const CourseElongatedList = ({ courses }) => {
   return (
     <div className="flex items-center my-6 shadow-lg">
       {courses?.map((course) => (
-        <div className="flex flex-col p-2 mx-2 shadow-xl my-4">
+        <LinkingButtons
+          className="flex flex-col p-2 mx-2 shadow-xl my-4 hover:cursor-pointer"
+          url={`/courses/${course?.id}`}
+          key={course?._id}
+        >
           <Image src={course?.imageUrl} width={200} height={200} />
           <h1 className="font-semibold py-2">{course?.title}</h1>
           <p className="my-2 font-light">
@@ -24,7 +30,7 @@ const CourseElongatedList = ({ courses }) => {
             </div>
             <div>{course?.students?.length}</div>
           </div>
-        </div>
+        </LinkingButtons>
       ))}
     </div>
   );

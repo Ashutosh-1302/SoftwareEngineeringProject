@@ -1,6 +1,8 @@
 import { connectDB } from "@/app/lib/db";
 import Course from "@/app/models/Course";
+import { redirect } from "next/navigation";
 import React from "react";
+import LinkingButtons from "../Wrappers/ClientWrappers/LinkingButtons";
 
 const CourseList = async () => {
   await connectDB();
@@ -9,9 +11,10 @@ const CourseList = async () => {
   return (
     <div className="flex my-6 shadow-xl">
       {courses?.map((course) => (
-        <div
+        <LinkingButtons
           key={course?._id}
-          className="mx-2 shadow-xl px-4 py-2 flex items-center my-4 overflow-x-auto"
+          className="mx-2 shadow-xl px-4 py-2 flex items-center my-4 overflow-x-auto hover:cursor-pointer"
+          url={`/courses/${course?.id}`}
         >
           <div>
             <img
@@ -27,7 +30,7 @@ const CourseList = async () => {
               {course?.description ? course?.description : "Description"}
             </p>
           </div>
-        </div>
+        </LinkingButtons>
       ))}
     </div>
   );
