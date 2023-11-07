@@ -1,48 +1,34 @@
-"use client";
-import { signIn, signOut, useSession } from "next-auth/react";
-import axios from "axios";
-import { UploadButton } from "@uploadthing/react";
-import Link from "next/link";
 
-export default function Home() {
-  const { data: session } = useSession();
-  console.log(session);
+import { getServerSession } from "next-auth";
+import CourseList from "./components/Course/CourseList";
+import { authOptions } from "./api/auth/[...nextauth]/options";
+import { connectDB } from "./lib/db";
+import User from "./models/User";
+import CourseElongatedList from "./components/Course/CourseElongatedList";
+import Course from "./models/Course";
+
+export default async function Home() {
+  const sess = await getServerSession(authOptions);
+  const uid = sess?.user?.id;
+
+  await connectDB();
+  const user = await User.findById(uid);
+
+  const courses = await Course.find({});
+
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <button
-        onClick={() =>
-          signIn("credentials", { password: "pwd", username: "ash" }, onSucc)
-        }
-      >
-        Sign in with Email
-      </button>
-      <button
-        onClick={async () => {
-          const { data } = await axios.post("/api/auth/signup", {
-            username: "ash",
-            password: "pwd",
-          });
-        }}
-      >
-        Sign up with Email
-      </button>
-
-      <button onClick={() => signOut()}>Sign out</button>
-      <UploadButton
-        endpoint="imageUploader"
-        onClientUploadComplete={(res) => {
-          // Do something with the response
-          console.log("Files: ", res);
-          alert("Upload Completed");
-        }}
-        onUploadError={(error) => {
-          // Do something with the error.
-          alert(`ERROR! ${error.message}`);
-        }}
-      />
-      <button onClick={() => signIn("github")}>Sign in with GitHub</button>]
-      <Link href ='/SignUpForm'>Form</Link>
+    <main className="flex flex-col justify-between">
+      <div className="bg-blue-200 py-24 w-full"></div>
+      <div className="px-24">
+        {/* <div>{JSON.stringify(user)}</div> */}
+        <div className="mr-12 text-xl font-mono font-semibold mt-6">
+          Hi {"Jack"}
+        </div>
+        <CourseList />
+        <div className="mr-12 text-xl font-mono font-semibold">Hi {"Jack"}</div>
+        <CourseElongatedList courses={courses} />
+      </div>
     </main>
   );
 }

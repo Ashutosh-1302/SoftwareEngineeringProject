@@ -4,7 +4,7 @@ const CourseSchema = new mongoose.Schema({
   title: String,
 
   rating: Number,
-
+  price: Number,
   description: String,
   selected: Boolean,
   students: [
@@ -31,8 +31,10 @@ const CourseSchema = new mongoose.Schema({
   ],
 
   imageUrl: String,
+  category: String,
 });
 
-const Course = mongoose.models.Course || mongoose.model("Course", CourseSchema);
+const Course =
+  mongoose?.models?.Course || mongoose.model("Course", CourseSchema);
 
 export default Course;
