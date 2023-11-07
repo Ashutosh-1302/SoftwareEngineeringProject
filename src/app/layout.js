@@ -3,6 +3,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SessionProvider } from "next-auth/react";
 import SessionProviderComponent from "./components/Providers/SessionProvider";
+import Navbar from "./components/UI/Layout/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,7 +16,12 @@ export default function RootLayout({ children }) {
   return (
     <SessionProviderComponent>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <nav>
+            <Navbar />
+          </nav>
+          <main>{children}</main>
+        </body>
       </html>
     </SessionProviderComponent>
   );
