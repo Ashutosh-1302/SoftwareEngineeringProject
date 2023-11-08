@@ -1,42 +1,42 @@
-import LinkingButtons from "@/app/components/Wrappers/ClientWrappers/LinkingButtons";
-import Course from "@/app/models/Course";
-import Lesson from "@/app/models/Lesson";
-import User from "@/app/models/User";
+"use client";
 
-const CoursePage = async ({ params }) => {
-  console.log(params?.id);
-  if (params?.id) {
-    console.log(params.id);
-    const course = await Course.findById(params.id)
-      .populate({
-        path: "lessons",
-        model: Lesson,
-      })
-      .populate({
-        path: "instructor",
-        model: User,
-      });
+import CoursePageComponent from "@/app/components/Course/CPCompo";
+import Client from "@/app/components/Wrappers/ClientWrappers/Client";
 
-    return (
-      <div>
-        <div>{course?.title}</div>
-        <div>{course?.description}</div>
-        <div>
-          {course?.lessons?.map((lesson) => (
-            <div>
-              <div>{lesson?.title}</div>
-              <div>{lesson?.desc}</div>
-              <div>{lesson?.imageUrl}</div>
-              <div>{lesson?.videoUrl}</div>
-            </div>
-          ))}
-        </div>
-        <LinkingButtons url={`/courses/${course._id}/publish`} className={""}>
-          Publish
-        </LinkingButtons>
-      </div>
-    );
-  }
+import axios from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const CoursePage = ({ params }) => {
+  const [course, setCourse] = useState(null);
+
+  const [showResources, setShowResources] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [showLectures, setShowLectures] = useState(true);
+
+  useEffect(() => {
+    const helper = async () => {
+      if (params?.id) {
+        const { data } = await axios.get(`/api/course/${params.id}`);
+        console.log(data);
+        setCourse(data);
+      }
+    };
+
+    helper();
+  }, []);
+
+  return (
+    <div>
+      <CoursePageComponent course={course} />
+      <Link
+        href={`/courses/${course?._id}/publish`}
+        className="my-4 w-1/4 bg-blue-700 text-white px-4 py-2 rounded-md"
+      >
+        Publish
+      </Link>
+    </div>
+  );
 };
 
 export default CoursePage;
