@@ -5,16 +5,16 @@ import { UploadButton } from "@uploadthing/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-export default function LessonUploadForm() {
+export default function CoursePublisher({ id }) {
   const [formData, setFormData] = useState({
     lectureVideoTitle: "",
     lectureVideoDescription: "",
-    lectureCategory: "",
   });
 
   const [errors, setErrors] = useState({});
 
   const [imageUrl, setImageUrl] = React.useState("");
+  const [videoUrl, setVideoUrl] = React.useState("");
 
   const rtr = useRouter();
 
@@ -41,9 +41,6 @@ export default function LessonUploadForm() {
     if (formData.lectureVideoDescription.trim() === "") {
       newErrors.lectureVideoDescription = "Description is required";
     }
-    if (formData.lectureCategory.trim() === "") {
-      newErrors.lectureCategory = "Categ is required";
-    }
 
     // If there are errors, don't proceed with form submission
     if (Object.keys(newErrors).length > 0) {
@@ -53,14 +50,15 @@ export default function LessonUploadForm() {
       // You can navigate to the next step or perform other actions here
       console.log("Form data:", formData);
 
-      const { data } = await axios.post("/api/course", {
+      const { data } = await axios.post("/api/lesson", {
         title: formData.lectureVideoTitle,
         description: formData.lectureVideoDescription,
         imageUrl,
-        category: formData.lectureCategory,
+        videoUrl,
+        courseId: id,
       });
       console.log(data);
-      rtr.push(`/courses/`);
+      rtr.push(`/courses/${id}`);
     }
   };
 
@@ -75,12 +73,12 @@ export default function LessonUploadForm() {
         className="bg-blue-400 w-1/3 px-4 rounded-lg py-8"
         style={{ background: "white" }}
       >
-        <h1 className="py-3 px-1 font-bold text-2xl">Upload Course</h1>
+        <h1 className="py-3 px-1 font-bold text-2xl">Upload Lesson</h1>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-16">
             <input
               name="lectureVideoTitle"
-              placeholder="Course Title"
+              placeholder="Lecture Video Title"
               type="text"
               value={formData.lectureVideoTitle}
               onChange={handleChange}
@@ -92,7 +90,7 @@ export default function LessonUploadForm() {
 
             <input
               name="lectureVideoDescription"
-              placeholder="Course Description"
+              placeholder="Lecture Video Description"
               type="text"
               value={formData.lectureVideoDescription}
               onChange={handleChange}
@@ -101,21 +99,35 @@ export default function LessonUploadForm() {
             {errors.lectureVideoDescription && (
               <p className="text-red-500">{errors.lectureVideoDescription}</p>
             )}
-            <input
-              name="lectureCategory"
-              placeholder="Course Categ"
-              type="text"
-              value={formData.lectureCategory}
-              onChange={handleChange}
-              className="border border-black p-2 rounded"
-            />
-            {errors.lectureCategory && (
-              <p className="text-red-500">{errors.lectureCategory}</p>
-            )}
 
             <div className="flex flex-wrap justify-between">
               <div>
-                <h1 className="font-medium">Course Thumbnail</h1>
+                <h1 className="font-medium"> Lecture Video</h1>
+              </div>
+              <div className="px-3">
+                {/* <button className="bg-blue-500 text-white px-5 py-2 rounded hover:bg-blue-600">
+                    Upload
+                  </button> */}
+
+                <UploadButton
+                  endpoint="videoUploader"
+                  onClientUploadComplete={async (res) => {
+                    // Do something with the response
+                    setVideoUrl(res[0].url);
+                    const { data } = await axios.post("/api/fileupload", res);
+                    console.log(data);
+                  }}
+                  onUploadError={(error) => {
+                    // Do something with the error.
+                    alert(`ERROR! ${error.message}`);
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-wrap justify-between">
+              <div>
+                <h1 className="font-medium">Lecture Video Thumbnail</h1>
               </div>
               <div className="px-3">
                 <UploadButton
@@ -136,7 +148,7 @@ export default function LessonUploadForm() {
 
             <div className="flex flex-wrap justify-between">
               <div>
-                <Link href={`/courses`}>
+                <Link href={`/courses/${id}`}>
                   <button className="bg-red-500 text-white px-5 py-2 rounded hover:bg-blue-600">
                     Cancel
                   </button>
