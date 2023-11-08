@@ -1,8 +1,14 @@
 "use client";
-import Link from "next/link";
+
+import axios from "axios";
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-export default function StepOneForm() {
+export default function StepOneForm({
+  prevStep,
+  formData: formOneData,
+  setFormData: setFormOneData,
+}) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -46,45 +52,73 @@ export default function StepOneForm() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       // Data is valid, you can submit it or perform other actions here
-      console.log("Form data:", formData);
+      console.log("Form data:", formData, formOneData);
 
-      // Redirect to the next step using Next.js routing
-      // You can customize the path as needed
-      window.location.href = "/SignUpForm";
+      const { data } = await axios.post("/api/auth/signup", {
+        username: formOneData.firstName + formOneData.lastName,
+        contact: formOneData.contactNumber,
+        email: formData.email,
+        password: formData.password,
+        role: 123,
+      });
+
+      signIn("credentials", {
+        username: formOneData.firstName + formOneData.lastName,
+        password: formData.password,
+        callbackUrl: "/",
+      });
+
+      console.log(data);
     }
   };
 
   return (
-    <div className='h-screen flex flex-col justify-center items-center' style={{ background: 'linear-gradient(to bottom, lightblue 50%, white 50%)' }}>
+    <div
+      className="h-screen flex flex-col justify-center items-center"
+      style={{
+        background: "linear-gradient(to bottom, lightblue 50%, white 50%)",
+      }}
+    >
       <div class="flex-col lg:flex lg:flex-row lg:gap-x-8 py-4">
-  <div class="lg:w-1/2">
-    <div class="flex-row gap-x-8 ">
-      <div className='py-5'>
-        <button className='bg-red-300 hover:bg-white px-7 py-2 rounded-sm'>Student</button>
+        <div class="lg:w-1/2">
+          <div class="flex-row gap-x-8 ">
+            <div className="py-5">
+              <button className="bg-red-300 hover:bg-white px-7 py-2 rounded-sm">
+                Student
+              </button>
+            </div>
+            <div>
+              <button className="bg-red-300 hover:bg-white px-7 py-2 rounded-sm">
+                Instructor
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="lg:w-1/2">
+          <div class="flex-row gap-x-8">
+            <div className="py-5">
+              <button className="bg-red-300 hover:bg-white px-7 py-2 rounded-sm">
+                Parent
+              </button>
+            </div>
+            <div>
+              <button className="bg-red-300 hover:bg-white px-7 py-2 rounded-sm">
+                Teaching.A
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div>
-        <button className='bg-red-300 hover:bg-white px-7 py-2 rounded-sm'>Instructor</button>
-      </div>
-    </div>
-  </div>
-  <div class="lg:w-1/2">
-    <div class="flex-row gap-x-8">
-      <div className='py-5'>
-        <button className='bg-red-300 hover:bg-white px-7 py-2 rounded-sm'>Parent</button>
-      </div>
-      <div>
-        <button className='bg-red-300 hover:bg-white px-7 py-2 rounded-sm'>Teaching.A</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-      <div className='bg-blue-400 w-1/3 px-4 rounded-lg py-8' style={{ background: 'white' }}>
+      <div
+        className="bg-blue-400 w-1/3 px-4 rounded-lg py-8"
+        style={{ background: "white" }}
+      >
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
@@ -122,13 +156,21 @@ export default function StepOneForm() {
             )}
           </div>
 
-          <Link
-            href="/SignUpForm"
+          <div
+            onClick={handleSubmit}
             className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
           >
-            Next
-          </Link>
+            Submit
+          </div>
+          <div
+            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            onClick={() => prevStep()}
+          >
+            Back
+          </div>
         </form>
+
+        <button onClick={() => {}}></button>
       </div>
     </div>
   );
